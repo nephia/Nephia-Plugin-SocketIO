@@ -1,5 +1,5 @@
 {
-   "abstract" : "It's new $module",
+   "abstract" : "Nephia plugin socketio support",
    "author" : [
       "ytnobody <ytnobody@gmail.com>"
    ],
@@ -42,6 +42,8 @@
       },
       "runtime" : {
          "requires" : {
+            "Nephia" : "0",
+            "PocketIO" : "0",
             "perl" : "5.008005"
          }
       },
@@ -52,5 +54,16 @@
       }
    },
    "release_status" : "unstable",
+   "resources" : {
+      "bugtracker" : {
+         "web" : "https://github.com/nephia/Nephia-Plugin-SocketIO/issues"
+      },
+      "homepage" : "https://github.com/nephia/Nephia-Plugin-SocketIO",
+      "repository" : {
+         "type" : "git",
+         "url" : "git://github.com/nephia/Nephia-Plugin-SocketIO.git",
+         "web" : "https://github.com/nephia/Nephia-Plugin-SocketIO"
+      }
+   },
    "version" : "0.01"
 }

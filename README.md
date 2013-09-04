@@ -1,14 +1,41 @@
 # NAME
 
-Nephia::Plugin::SocketIO - It's new $module
+Nephia::Plugin::SocketIO - Nephia plugin socketio support
 
 # SYNOPSIS
 
-    use Nephia::Plugin::SocketIO;
+    use Nephia plugins => [
+        'SocketIO',
+        ...
+    ];
+    
+
+    app {
+        socketio 'your_event' => sub {
+            my $socket = shift; ### PocketIO::Socket object
+            $socket->emit('some_event' => 'some_data');
+        };
+    };
+
+
 
 # DESCRIPTION
 
-Nephia::Plugin::SocketIO is ...
+Nephia::Plugin::SocketIO is a plugin for Nephia. It provides SocketIO messaging feature.
+
+# DSL
+
+## socketio
+
+    my $coderef = sub {
+        my $socket = shift; # PocketIO::Socket object
+        ...
+    };
+    socketio $str => $coderef;
+
+Specifier DSL for SocketIO messaging.
+
+$str is event name, and $coderef is event logic.
 
 # LICENSE
 
