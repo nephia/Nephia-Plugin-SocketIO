@@ -6,7 +6,6 @@ use parent 'Nephia::Plugin';
 use PocketIO;
 use Plack::Builder;
 use Nephia::Plugin::SocketIO::Assets;
-use Data::Dumper::Concise;
 
 our $VERSION = "0.01";
 
@@ -23,13 +22,12 @@ sub socketio {
     my ($self, $context) = @_;
     return sub ($&) {
         my ($event, $code) = @_;
-        $self->{events}{$event} = $code;
+        $self->app->{events}{$event} = $code;
     };
 }
 
 sub _wrap_app {
-warn Dumper({ wrap_app => [@_] });
-    my $app = shift;
+    my ($app, $coderef) = @_;
     builder {
         mount '/socket.io.js' => sub {
             [200, ['Content-Type' => 'text/javascript'], [Nephia::Plugin::SocketIO::Assets->get('socket.io.js')]];
@@ -45,7 +43,7 @@ warn Dumper({ wrap_app => [@_] });
             enable 'SimpleContentFilter', filter => sub{
                 s|(</body>)|$1\n<script type="text/javascript" src="/socket.io.js"></script>|i;
             };
-            $app;
+            $coderef;
         };
     };
 }
