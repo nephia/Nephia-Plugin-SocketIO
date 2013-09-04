@@ -5,6 +5,8 @@ use warnings;
 use parent 'Nephia::Plugin';
 use PocketIO;
 use Plack::Builder;
+use HTML::Escape ();
+use Sub::Recursive;
 use Nephia::Plugin::SocketIO::Assets;
 
 our $VERSION = "0.01";
@@ -22,7 +24,10 @@ sub socketio {
     my ($self, $context) = @_;
     return sub ($&) {
         my ($event, $code) = @_;
-        $self->app->{events}{$event} = $code;
+        $self->app->{events}{$event} = sub {
+            my ($socket, $var) = @_;
+            $code->($socket, _escape_html_recursive($var)); ### avoid XSS by _escape_html_recursive
+        };
     };
 }
 
@@ -46,6 +51,18 @@ sub _wrap_app {
             $coderef;
         };
     };
+}
+
+sub _escape_html_recursive {
+    my $v = shift;
+    return unless $v;
+    my $work = recursive {
+        my $val = shift;
+        ref($val) eq 'ARRAY' ? [map {$REC->($_)} @$val] :
+        ref($val) eq 'HASH'  ? +{map {($_, $REC->($val->{$_}))} keys %$val} :
+        HTML::Escape::escape_html($val) ;
+    };
+    $work->($v);
 }
 
 1;

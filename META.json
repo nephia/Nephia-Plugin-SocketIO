@@ -42,8 +42,10 @@
       },
       "runtime" : {
          "requires" : {
+            "HTML::Escape" : "0",
             "Nephia" : "0",
             "PocketIO" : "0",
+            "Sub::Recursive" : "0",
             "perl" : "5.008005"
          }
       },
