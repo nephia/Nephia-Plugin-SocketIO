@@ -1,5 +1,5 @@
 requires 'perl', '5.008001';
-requires 'Nephia';
+requires 'Nephia', '0.80';
 requires 'PocketIO';
 requires 'HTML::Escape';
 requires 'Sub::Recursive';
